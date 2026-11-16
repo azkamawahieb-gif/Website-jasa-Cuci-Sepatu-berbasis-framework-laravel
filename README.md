@@ -1,58 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 👟 Cuci Sepatu
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Sistem pemesanan jasa cuci sepatu dengan layanan jemput dan antar.**
+Pelanggan memesan dari rumah dan memantau status tiap tahap. Petugas mengelola pesanan, penjemputan, pembayaran, dan layanan dari satu dashboard.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3%2B-777BB4?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+![PHPUnit](https://img.shields.io/badge/Tested%20with-PHPUnit-3C9CD7)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![Beranda](docs/beranda pengguna.png)
+![Form pesanan](docs/daftar_layanan.png)
+![Dashboard petugas](docs /pesanan.png)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Latar belakang
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Proyek ini berawal dari dokumen *Identifikasi Proses Bisnis* sebuah usaha cuci sepatu. Masalah yang ditemukan, dan solusi yang dibangun:
 
-## Learning Laravel
+| Masalah di proses manual | Solusi di aplikasi |
+|---|---|
+| Pertanyaan tentang layanan dan harga berulang | Beranda publik berisi layanan, harga, zona dan biaya, serta FAQ |
+| Pencatatan pesanan manual | Pesanan tersimpan di database dengan kode otomatis `SC-yymmdd-001` |
+| Tidak ada bukti kondisi sepatu | Foto kondisi sebelum dan sesudah pada setiap sepatu |
+| Pelanggan tidak bisa cek status | Halaman status dengan bilah kemajuan dan riwayat tahap |
+| Sulit mengabari saat selesai | Status "Siap" terlihat langsung dan tautan WhatsApp ke pelanggan |
+| Verifikasi kepemilikan saat sepatu diambil | Kode pesanan yang ditempel di sepatu sebagai bukti ambil |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Fitur
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Pengunjung:** melihat layanan, harga, zona jemput/antar, dan FAQ tanpa login.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+**Pengguna (pelanggan)**
+- Daftar dan login, lalu pesan beberapa pasang sepatu sekaligus (nama, warna, ukuran, kondisi, foto awal).
+- Jemput dan antar dapat dikombinasikan bebas, dengan biaya dihitung dari zona.
+- Alamat tersimpan lebih dari satu (utama, Kantor/Rumah) dengan tautan dan pratinjau Google Maps.
+- Memantau status, melihat riwayat, dan membatalkan pesanan selama belum diproses.
+- Profil bergaya aplikasi modern: foto, bio, pengaturan akun, ganti akun/keluar.
 
-## Agentic Development
+**Petugas**
+- Mengelola pesanan dari konfirmasi sampai selesai, serta mencatat pembayaran (tunai/transfer/QRIS).
+- Mengelola jemput dan antar, layanan, zona, dan data pengguna.
+- Dashboard ringkasan pesanan dan omzet bulanan.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+### Alur status pesanan
+```mermaid
+flowchart LR
+    A[Menunggu Konfirmasi] --> B[Menunggu Jemput]
+    A --> C[Diterima]
+    B --> C
+    C --> D[Sedang Dicuci] --> E[Siap]
+    E --> F[Dalam Pengantaran] --> G[Selesai]
+    E --> G
+    A -. batal .-> X[Dibatalkan]
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Sorotan teknis
 
-## Contributing
+- **Kontrol akses berbasis peran** lewat middleware `role` dan enum `Role`. Data pengguna lain tidak bisa diakses (diuji otomatis).
+- **Integritas harga:** harga dikunci saat pesanan dibuat, dan total selalu dihitung ulang di server (tidak percaya angka dari browser).
+- **Transaksi database** pada pembuatan pesanan, sehingga pesanan tidak pernah tersimpan setengah jadi.
+- **Keamanan dasar:** validasi sisi server, perlindungan CSRF, pembatasan percobaan login (*throttle*), penghashan password, role akun baru dipaksa `pengguna`, dan validasi tautan agar hanya `http/https`.
+- **Mesin status** dengan enum `OrderStatus` (label, warna, aturan pembatalan) dan log perubahan status per pesanan.
+- **Desain sistem tanpa framework CSS** untuk sisi pelanggan: palet, token desain, animasi halus, hormat pada `prefers-reduced-motion`, dan aturan kontras teks. Sisi petugas memakai CoreUI.
+- **Pengujian otomatis** (PHPUnit) untuk alur pesanan, pemisahan akses, dan perhitungan total.
+- **Tanpa langkah build:** CSS dan JavaScript ditulis langsung (tanpa Node/Vite), mudah dijalankan di Laragon atau hosting biasa.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Teknologi
 
-## Code of Conduct
+Laravel 13 · PHP 8.3+ · Blade · MySQL · PHPUnit · CoreUI 5 (sisi petugas) · JavaScript murni
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Menjalankan di komputer sendiri
 
-## Security Vulnerabilities
+Prasyarat: PHP 8.3+, Composer, MySQL (mis. Laragon).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/azkamawahieb-gif/cuci-sepatu.git
+cd cuci-sepatu
+composer install
+cp .env.example .env
+php artisan key:generate
+# buat database "cuci_sepatu" di MySQL, lalu sesuaikan DB_* di file .env
+php artisan migrate --seed
+php artisan storage:link
+php artisan serve
+```
 
-## License
+**Akun uji** (dari seeder, password: `password`)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Peran | Email |
+|---|---|
+| Petugas | `petugas@cucisepatu.test` |
+| Pengguna | `pengguna@cucisepatu.test` |
+
+> Ganti password akun ini sebelum dipakai di server sungguhan.
+
+## Pengujian
+```bash
+php artisan test
+```
+Tes memakai SQLite memori sehingga tidak menyentuh database utama.
+
+## Rencana pengembangan
+- [ ] Dashboard petugas dengan grafik dan animasi
+- [ ] Notifikasi status pesanan dan pengaturan notifikasi
+- [ ] Chat pengguna dengan petugas
+- [ ] Laporan pendapatan dengan ekspor CSV
+- [ ] Cetak label kode pesanan
+- [ ] Deploy ke hosting
+
+## Pembuat
+**[Nama Anda]**, [Program Studi, Politeknik Caltex Riau]
+[LinkedIn / email]

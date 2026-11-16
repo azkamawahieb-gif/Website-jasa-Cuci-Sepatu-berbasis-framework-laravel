@@ -1,0 +1,135 @@
+/* Profil gaya Shopee dengan palet terang. Teks di atas gradien selalu navy. */
+.profil-halaman { max-width: 760px; margin: 1.2rem auto 2.5rem; display: grid; gap: 1rem; }
+
+/* Kepala profil */
+.profil-hero {
+  padding: 1.4rem 1.3rem;
+  background: var(--gradien);
+  border-radius: var(--radius-besar);
+  box-shadow: var(--bayangan);
+  color: var(--navy);
+}
+.profil-hero-isi { display: flex; align-items: center; gap: 1rem; }
+.profil-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .8);
+  color: var(--navy);
+  font-size: 1.9rem;
+  font-weight: 800;
+  overflow: hidden;
+}
+.profil-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.profil-avatar-kecil { width: 64px; height: 64px; font-size: 1.6rem; border-color: var(--garis); }
+.profil-identitas { flex: 1; min-width: 0; }
+.profil-identitas h1 { font-size: 1.35rem; line-height: 1.2; overflow-wrap: anywhere; }
+.profil-identitas p { margin-top: .25rem; font-size: .92rem; overflow-wrap: anywhere; }
+
+.profil-ikon { display: flex; gap: .5rem; align-self: flex-start; }
+.ikon-tombol {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .8);
+  color: var(--navy);
+  transition: background var(--cepat) var(--ease), transform var(--cepat) var(--ease);
+}
+.ikon-tombol:hover { background: #fff; transform: translateY(-1px); }
+.ikon-tombol:focus-visible,
+.status-item:focus-visible,
+.menu-baris:focus-visible,
+.kembali:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+
+.ikon-tombol svg, .status-ikon svg, .menu-ikon svg, .kembali svg {
+  width: 22px; height: 22px; fill: none; stroke: currentColor;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.ikon-titik {
+  position: absolute; top: -4px; right: -4px;
+  display: grid; place-items: center;
+  min-width: 18px; height: 18px; padding: 0 4px;
+  border-radius: var(--radius-pil);
+  background: var(--navy); color: #fff;
+  font-size: .7rem; font-weight: 800;
+}
+
+/* Kartu */
+.profil-kartu {
+  padding: 1.1rem 1.2rem;
+  background: var(--putih);
+  border: 1px solid var(--garis);
+  border-radius: var(--radius);
+  box-shadow: var(--bayangan-kecil);
+}
+.profil-kartu-kepala { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.profil-kartu-kepala h2 { font-size: 1.1rem; }
+.profil-kartu-kepala a { font-size: .88rem; font-weight: 600; }
+
+/* Status pesanan */
+.status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin-bottom: 1.1rem; }
+.status-item { display: grid; justify-items: center; gap: .45rem; padding: .5rem .2rem; border-radius: 12px; color: var(--navy); text-align: center; }
+.status-item:hover { background: var(--mint-muda); }
+.status-ikon {
+  position: relative; display: grid; place-items: center;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--mint-muda); color: var(--navy);
+}
+.status-ikon svg { width: 26px; height: 26px; }
+.status-badge {
+  position: absolute; top: -4px; right: -6px;
+  display: grid; place-items: center;
+  min-width: 20px; height: 20px; padding: 0 5px;
+  border-radius: var(--radius-pil);
+  background: var(--navy); color: #fff;
+  font-size: .72rem; font-weight: 800;
+}
+.status-label { font-size: .82rem; font-weight: 600; }
+
+/* Menu */
+.profil-menu { padding: .3rem 1.2rem; }
+.menu-baris { display: flex; align-items: center; gap: .9rem; padding: .9rem 0; border-top: 1px solid var(--garis); color: var(--navy); }
+.menu-baris:first-child { border-top: 0; }
+.menu-baris:hover .menu-teks strong { color: var(--biru); }
+.menu-ikon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--mint-muda); }
+.menu-teks { flex: 1; min-width: 0; display: grid; }
+.menu-teks small { color: var(--redup); font-size: .82rem; }
+.menu-panah { flex: none; width: 18px; height: 18px; fill: none; stroke: var(--redup); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Halaman Akun Saya */
+.halaman-judul { display: flex; align-items: center; gap: .6rem; }
+.halaman-judul h1 { font-size: 1.3rem; }
+.kembali { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--putih); border: 1px solid var(--garis); color: var(--navy); }
+.kembali:hover { background: var(--mint-muda); }
+.avatar-edit { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+.avatar-isi { flex: 1; min-width: 0; }
+.avatar-isi label { display: block; margin-bottom: .3rem; font-weight: 600; font-size: .9rem; }
+
+@media (max-width: 480px) {
+  .profil-hero-isi { flex-wrap: wrap; }
+  .profil-ikon { order: 3; width: 100%; justify-content: flex-end; }
+  .status-label { font-size: .75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ikon-tombol:hover { transform: none; }
+}
+/* Halaman Pengaturan */
+.menu-judul { margin: .9rem 0 .2rem; font-size: .8rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--redup); }
+.menu-judul + .menu-baris { border-top: 0; }
+.profil-menu form { margin: 0; }
+.menu-tombol { width: 100%; background: none; border: 0; border-top: 1px solid var(--garis); font: inherit; text-align: left; cursor: pointer; }
+.menu-judul + form .menu-tombol { border-top: 0; }
+.menu-tombol:hover .menu-teks strong { color: var(--biru); }
+.menu-bahaya, .menu-bahaya:hover .menu-teks strong, .menu-bahaya .menu-teks strong { color: #B3261E; }
+.menu-bahaya .menu-ikon { background: #FDE4E4; }
+.menu-tombol:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+/* Pesan kosong polos (halaman pesanan dari kartu status) */
+.kosong-polos { padding: 3rem 1rem; text-align: center; color: var(--redup); font-size: 1rem; }

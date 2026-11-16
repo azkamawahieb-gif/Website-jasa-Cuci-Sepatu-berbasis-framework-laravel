@@ -1,0 +1,184 @@
+/* =========================================================
+   HALAMAN LOGIN & DAFTAR (Tahap B)
+   Dimuat setelah tema.css. Tidak membutuhkan pengguna.css.
+   ========================================================= */
+
+/* ---------- Dasar halaman ---------- */
+.auth-body { margin: 0; min-height: 100vh; overflow-x: hidden; }
+.auth-body *, .auth-body *::before, .auth-body *::after { box-sizing: border-box; }
+:where(.auth-body) :is(h1, h2, p, form) { margin: 0; }
+.auth-body a { text-decoration: none; }
+
+.auth-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.auth-bg .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55;
+  animation: melayang 16s ease-in-out infinite; }
+.auth-bg .b1 { width: 420px; height: 420px; left: -120px; top: -100px; background: var(--mint); }
+.auth-bg .b2 { width: 480px; height: 480px; right: -140px; bottom: -160px; background: var(--sky); animation-delay: -6s; }
+
+.auth-wrap { position: relative; z-index: 1; min-height: 100vh; display: grid; place-items: center;
+  padding: clamp(10px, 3vw, 32px); }
+
+.auth-shell {
+  width: 100%; max-width: 1080px; min-height: 640px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px;
+  background: rgba(255, 255, 255, .55);
+  border: 1px solid rgba(213, 228, 240, .9);
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(11, 37, 69, .14);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  animation: muncul .6s var(--ease) backwards;
+}
+
+/* ---------- Kolom kiri: form ---------- */
+.auth-form-side { display: flex; flex-direction: column; padding: 20px 28px;
+  background: #fff; border: 1px solid var(--garis); border-radius: 22px; }
+
+.auth-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.auth-brand { display: flex; align-items: center; gap: 10px; color: var(--navy); }
+.auth-logo { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px;
+  background: var(--gradien); color: var(--navy); box-shadow: var(--bayangan-kecil); }
+.auth-logo svg { width: 22px; height: 22px; }
+.auth-brand-nama { display: block; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.auth-brand-sub { display: block; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--redup); }
+
+.auth-switch { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+  margin-top: 20px; font-size: .88rem; color: var(--redup); }
+.auth-switch .btn-putih { border-color: var(--garis); }
+
+.auth-main { flex: 1; width: 100%; max-width: 380px; margin: 0 auto; padding: 26px 0 18px;
+  display: flex; flex-direction: column; justify-content: center; }
+.auth-main h1 { text-align: center; font-size: clamp(1.45rem, 2.4vw, 1.8rem); }
+.auth-lead { margin-top: 6px; text-align: center; color: var(--redup); font-size: .92rem; }
+.auth-form { margin-top: 22px; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.auth-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  font-size: .8rem; color: var(--redup); }
+.auth-bottom a { color: var(--biru); font-weight: 600; }
+.auth-bottom a:hover { color: var(--biru-tua); }
+
+/* ---------- Input ---------- */
+.fld { margin-bottom: 14px; }
+.fld label { display: block; margin-bottom: 6px; font-size: .85rem; font-weight: 700; color: var(--navy); }
+.fld input, .fld textarea {
+  display: block; width: 100%; padding: .8rem 1rem;
+  border: 1px solid var(--garis); border-radius: 14px; background: #fff;
+  color: var(--navy); font: 500 .95rem/1.4 var(--font);
+  transition: border-color var(--cepat) var(--ease), box-shadow var(--cepat) var(--ease);
+}
+.fld textarea { resize: vertical; min-height: 4.2rem; }
+.fld input::placeholder, .fld textarea::placeholder { color: #5F7088; }
+.fld input:focus, .fld textarea:focus {
+  outline: none; border-color: var(--biru); box-shadow: 0 0 0 4px rgba(45, 91, 176, .15);
+}
+.fld.ada-error input, .fld.ada-error textarea { border-color: #C62828; }
+.fld-error { margin-top: 6px; font-size: .82rem; color: #A12020; }
+.fld-hint { margin-top: 6px; font-size: .8rem; color: var(--redup); }
+
+.pw { position: relative; }
+.pw input { padding-right: 3.1rem; }
+.pw-toggle { position: absolute; top: 50%; right: 6px; transform: translateY(-50%);
+  width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 10px;
+  background: transparent; color: var(--redup); cursor: pointer;
+  transition: background var(--cepat) var(--ease), color var(--cepat) var(--ease); }
+.pw-toggle:hover { background: var(--mint-muda); color: var(--biru); }
+.pw-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+.pw-toggle .ic-off { display: none; }
+.pw-toggle[aria-pressed="true"] .ic-on { display: none; }
+.pw-toggle[aria-pressed="true"] .ic-off { display: block; }
+
+.auth-cek { display: flex; align-items: center; gap: 8px; margin: 2px 0 18px;
+  font-size: .88rem; color: var(--navy); cursor: pointer; }
+.auth-cek input { width: 17px; height: 17px; accent-color: var(--biru); }
+
+.auth-form .btn[disabled] { opacity: .75; cursor: progress; transform: none; }
+
+.auth-alert { margin-top: 16px; padding: .7rem .9rem; border-radius: 12px; font-size: .88rem; }
+.auth-alert-ok { background: #E2FBEF; color: #14633F; border: 1px solid #BDEFD6; }
+
+/* ---------- Kolom kanan: panel gradien (teks di tengah) ---------- */
+.auth-panel { position: relative; isolation: isolate; overflow: hidden;
+  display: grid; place-items: center;
+  padding: clamp(28px, 4vw, 48px); border-radius: 22px;
+  background: var(--gradien); color: var(--navy);
+  --mx: 50%; --my: 50%; --px: 0px; --py: 0px; }
+
+/* Cahaya lembut yang mengalir pelan di belakang teks */
+.auth-panel::before { content: ''; position: absolute; inset: -25%; z-index: -2;
+  background:
+    radial-gradient(40% 30% at 80% 15%, rgba(255, 255, 255, .55), transparent 70%),
+    radial-gradient(35% 30% at 15% 60%, rgba(255, 255, 255, .30), transparent 70%),
+    radial-gradient(40% 30% at 70% 92%, rgba(160, 249, 219, .45), transparent 70%);
+  animation: panelAlir 18s ease-in-out infinite alternate; }
+
+/* Sorot cahaya yang mengikuti kursor (diatur auth.js) */
+.auth-panel::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(260px circle at var(--mx) var(--my), rgba(255, 255, 255, .42), transparent 70%);
+  opacity: 0; transition: opacity .4s var(--ease); }
+.auth-panel.sorot::after { opacity: 1; }
+
+/* Kartu kaca di tengah panel */
+.ap-isi { max-width: 30rem; text-align: center;
+  padding: clamp(24px, 3.2vw, 40px) clamp(22px, 3vw, 36px);
+  background: rgba(255, 255, 255, .6); border: 1px solid rgba(255, 255, 255, .85); border-radius: 26px;
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px rgba(11, 37, 69, .16);
+  transform: translate3d(var(--px), var(--py), 0); transition: transform .35s var(--ease); }
+
+.ap-eyebrow { display: inline-block; padding: .35rem .95rem; border-radius: 999px;
+  background: var(--biru); color: #fff; font-size: .72rem; font-weight: 800; letter-spacing: .28em; }
+
+.ap-merek { margin: .2em 0 .05em; font-size: clamp(2.6rem, 5.2vw, 4rem); font-weight: 800;
+  letter-spacing: -.03em; line-height: 1.05; }
+.huruf { display: inline-block; cursor: default;
+  color: var(--navy);
+  color: color-mix(in srgb, var(--navy), var(--biru) calc(var(--h, 0) * 14%));
+  transition: transform .25s var(--ease);
+  animation: hurufNaik .7s var(--ease) backwards;
+  animation-delay: calc(.35s + var(--h, 0) * 70ms); }
+.huruf:hover { transform: translateY(-.1em) scale(1.07); }
+
+.ap-tagline { font-size: 1.15rem; font-weight: 800; color: var(--biru); }
+.ap-subtag { margin-top: 4px; font-size: .92rem; font-weight: 600; color: var(--redup); }
+.ap-garis { display: block; width: 84px; height: 4px; margin: 20px auto; border-radius: 999px;
+  background: linear-gradient(90deg, var(--mint-2), var(--blue), var(--biru)); transform-origin: center;
+  animation: garisTumbuh .9s var(--ease) .9s backwards; }
+.ap-judul { font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em; color: var(--navy); }
+.ap-teks { margin-top: 12px; font-size: .95rem; font-weight: 500; line-height: 1.65; color: var(--navy); }
+.ap-ajak { margin-top: 16px; font-size: .95rem; font-weight: 700; line-height: 1.6; color: var(--biru-tua); }
+
+@keyframes panelAlir {
+  0%   { transform: translate3d(-4%, -3%, 0) scale(1); }
+  100% { transform: translate3d(4%, 3%, 0) scale(1.08); }
+}
+@keyframes hurufNaik { from { opacity: 0; transform: translateY(.6em) scale(.9); } }
+@keyframes garisTumbuh { from { transform: scaleX(0); opacity: 0; } }
+
+/* ---------- Responsif ---------- */
+@media (max-width: 900px) {
+  .auth-shell { grid-template-columns: 1fr; max-width: 520px; min-height: 0; }
+  .auth-panel { order: -1; padding: 18px 22px; border-radius: 18px; }
+  /* Di layar kecil kartu kaca dilepas, teks kembali navy di atas gradien */
+  .ap-isi { padding: 0; background: none; border: 0; box-shadow: none;
+    -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .ap-eyebrow { padding: .25rem .75rem; font-size: .64rem; letter-spacing: .24em; }
+  .ap-merek { font-size: 2rem; }
+  .huruf { color: var(--navy); }
+  .ap-tagline { font-size: .95rem; color: var(--navy); }
+  .ap-subtag, .ap-garis, .ap-judul, .ap-teks, .ap-ajak { display: none; }
+}
+@media (max-width: 480px) {
+  .auth-wrap { padding: 8px; }
+  .auth-shell { padding: 8px; border-radius: 22px; }
+  .auth-form-side { padding: 16px; }
+  .auth-main { padding: 20px 0 14px; }
+}
+
+/* ---------- Kurangi gerakan: semua tampil statis ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .auth-bg .blob, .auth-panel::before, .huruf, .ap-garis { animation: none !important; }
+  .auth-panel::after { display: none; }
+  .ap-isi { transform: none !important; }
+}

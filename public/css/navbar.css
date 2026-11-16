@@ -1,0 +1,84 @@
+html { scroll-padding-top: 6.5rem; }
+
+/* ---------- Navbar ---------- */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  padding: 12px 1rem 0;
+  background: none; border: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  pointer-events: none;            /* area kosong di kiri-kanan pil tidak menghalangi klik */
+}
+.header .nav {
+  pointer-events: auto; position: relative;
+  max-width: 1100px; margin: 0 auto; padding: .45rem .5rem .45rem 1rem; gap: 1rem;
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(255, 255, 255, .9);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(11, 37, 69, .12);
+  -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%);
+}
+
+.brand { display: inline-flex; align-items: center; gap: .55rem; font-size: 1.1rem; }
+.brand-logo { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px;
+  background: var(--gradien); color: var(--navy); box-shadow: var(--bayangan-kecil); }
+.brand-logo svg { width: 20px; height: 20px; }
+
+.nav-menu { display: flex; align-items: center; flex: 1; justify-content: space-between; gap: 1rem; }
+.nav-links { display: flex; align-items: center; gap: .2rem; }
+.nav-tengah { margin: 0 auto; }
+.nav-kanan { gap: .35rem; }
+
+.nav-links a:not(.btn), .link-btn {
+  padding: .45rem .8rem; border-radius: 999px;
+  font-size: .93rem; font-weight: 600; color: var(--navy);
+  transition: background var(--cepat) var(--ease), color var(--cepat) var(--ease);
+}
+.nav-links a:not(.btn):hover, .link-btn:hover { background: var(--mint-muda); color: var(--biru); }
+.nav-links .btn-kecil { padding: .5rem 1.1rem; font-size: .9rem; box-shadow: 0 4px 12px rgba(45, 91, 176, .25); }
+
+/* Tombol menu (hanya tampil di layar kecil bila JavaScript aktif) */
+.nav-toggle { display: none; }
+
+@media (max-width: 1080px) {
+  .header .nav { flex-wrap: wrap; border-radius: 28px; }
+  .nav-menu { flex-basis: 100%; flex-wrap: wrap; }
+
+  .js .nav-toggle { display: grid; place-items: center; width: 42px; height: 42px; margin-left: auto;
+    border: 0; border-radius: 50%; background: var(--mint-muda); cursor: pointer; }
+  .garis-menu, .garis-menu::before, .garis-menu::after {
+    content: ''; display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--navy);
+    transition: transform var(--cepat) var(--ease), background var(--cepat) var(--ease), top var(--cepat) var(--ease); }
+  .garis-menu { position: relative; }
+  .garis-menu::before, .garis-menu::after { position: absolute; left: 0; }
+  .garis-menu::before { top: -6px; }
+  .garis-menu::after { top: 6px; }
+  .nav-toggle[aria-expanded="true"] .garis-menu { background: transparent; }
+  .nav-toggle[aria-expanded="true"] .garis-menu::before { top: 0; transform: rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .garis-menu::after { top: 0; transform: rotate(-45deg); }
+
+  .js .header .nav { flex-wrap: nowrap; border-radius: 999px; }
+  .js .nav-menu {
+    display: none; position: absolute; left: 0; right: 0; top: calc(100% + 10px);
+    flex-direction: column; align-items: stretch; gap: .3rem; padding: .8rem;
+    background: rgba(255, 255, 255, .94); border: 1px solid var(--garis); border-radius: 24px;
+    box-shadow: var(--bayangan);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  }
+  .js .nav-menu.buka { display: flex; animation: naik .3s var(--ease); }
+  .js .nav-links { flex-direction: column; align-items: stretch; gap: .15rem; margin: 0; }
+  .js .nav-links a:not(.btn), .js .link-btn { display: block; width: 100%; padding: .7rem 1rem; text-align: left; }
+  .js .nav-kanan { margin-top: .3rem; padding-top: .6rem; border-top: 1px solid var(--garis); }
+  .js .nav-kanan .btn { display: block; margin: .2rem 0; padding: .7rem 1rem; }
+  .js .form-inline { display: block; }
+}
+
+/* ---------- Footer ---------- */
+.footer { margin-top: clamp(3rem, 7vw, 5rem); padding: 2.4rem 0 1.4rem; text-align: left;
+  background: rgba(255, 255, 255, .7); border-top: 1px solid var(--garis); color: var(--redup); font-size: .92rem; }
+.footer-isi { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.4rem; }
+.footer-merek strong { display: block; font-size: 1.15rem; letter-spacing: -.02em; color: var(--navy); }
+.footer-merek p { margin-top: .3rem; max-width: 24rem; }
+.footer-link { display: flex; flex-wrap: wrap; align-content: flex-start; gap: .4rem 1.3rem; }
+.footer-link a { font-weight: 600; color: var(--navy); transition: color var(--cepat) var(--ease); }
+.footer-link a:hover { color: var(--biru); }
+.footer-bawah { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--garis); font-size: .85rem; }

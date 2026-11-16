@@ -27,7 +27,13 @@ class ProfilController extends Controller
             'selesai' => $perStatus->only(['selesai'])->sum(),
         ];
 
-        return view('pengguna.profil', compact('hitung'));
+        // Menghitung pesan chat yang belum dibaca
+        $chatBaru = \App\Models\ChatMessage::where('user_id', $request->user()->id)
+            ->whereColumn('sender_id', '<>', 'user_id')
+            ->whereNull('read_at')
+            ->count();
+
+        return view('pengguna.profil', compact('hitung', 'chatBaru'));
     }
 
     // Halaman "Akun Saya": ubah data diri, foto, bio, dan password
@@ -61,13 +67,16 @@ class ProfilController extends Controller
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
+
             $data['avatar'] = $request->file('avatar')->store('avatar', 'public');
+
         } elseif ($request->boolean('hapus_avatar') && $user->avatar) {
             Storage::disk('public')->delete($user->avatar);
             $data['avatar'] = null;
         }
 
         unset($data['hapus_avatar']);
+
         $user->update($data);
 
         return back()->with('success', 'Profil berhasil diperbarui.');
@@ -84,7 +93,9 @@ class ProfilController extends Controller
             'password.min' => 'Password baru minimal 8 karakter.',
         ]);
 
-        $request->user()->update(['password' => Hash::make($request->password)]);
+        $request->user()->update([
+            'password' => Hash::make($request->password)
+        ]);
 
         return back()->with('success', 'Password berhasil diubah.');
     }

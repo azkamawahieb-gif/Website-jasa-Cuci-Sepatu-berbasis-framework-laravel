@@ -20,7 +20,6 @@ Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/layanan/{slug}', [BerandaController::class, 'layanan'])->name('layanan.detail');
 
 // Hanya untuk yang belum login
-
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
@@ -45,8 +44,18 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::put('/profil/password', [ProfilController::class, 'password'])->name('profil.password');
     Route::get('/profil/akun', [ProfilController::class, 'akun'])->name('profil.akun');
+
+    // Pengaturan
     Route::get('/pengaturan', [\App\Http\Controllers\Pengguna\PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::post('/pengaturan/ganti-akun', [\App\Http\Controllers\Pengguna\PengaturanController::class, 'gantiAkun'])->name('pengaturan.ganti');
+
+    // Notifikasi
+    Route::put('/pengaturan/notifikasi', [\App\Http\Controllers\Pengguna\NotifikasiController::class, 'simpan'])->name('notifikasi.simpan');
+
+    // Chat pengguna
+    Route::get('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'store'])->middleware('throttle:30,1')->name('chat.kirim');
+    Route::get('/chat/pesan', [\App\Http\Controllers\Pengguna\ChatController::class, 'sejak'])->name('chat.pesan');
 
     // Alamat tersimpan
     Route::get('/profil/alamat', [AlamatController::class, 'index'])->name('alamat.index');
@@ -69,6 +78,12 @@ Route::middleware(['auth', 'role:petugas'])
 
         // Dashboard
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
+        
+        // Chat dengan pengguna
+        Route::get('chat', [\App\Http\Controllers\Petugas\ChatController::class, 'index'])->name('chat.index');
+        Route::get('chat/{user}', [\App\Http\Controllers\Petugas\ChatController::class, 'show'])->name('chat.show');
+        Route::post('chat/{user}', [\App\Http\Controllers\Petugas\ChatController::class, 'store'])->middleware('throttle:60,1')->name('chat.kirim');
+        Route::get('chat/{user}/pesan', [\App\Http\Controllers\Petugas\ChatController::class, 'sejak'])->name('chat.sejak');
 
         // Pesanan
         Route::get('pesanan', [OrderController::class, 'index'])->name('pesanan.index');

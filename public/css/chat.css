@@ -1,0 +1,75 @@
+/* Chat. Berdiri sendiri supaya sama di sisi pengguna dan sisi petugas (CoreUI). */
+.chat {
+  --c-biru: #2D5BB0;
+  --c-biru-tua: #1F4AA0;
+  --c-navy: #0B2545;
+  --c-redup: #4A5D78;
+  --c-garis: #D5E4F0;
+  --c-latar: #F2FBF9;
+  display: grid;
+  gap: .7rem;
+}
+
+.chat-daftar {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  height: clamp(320px, 60vh, 560px);
+  padding: .8rem;
+  overflow-y: auto;
+  background: var(--c-latar);
+  border: 1px solid var(--c-garis);
+  border-radius: 16px;
+  scroll-behavior: smooth;
+}
+.chat-daftar:focus-visible { outline: 3px solid #71ADD4; outline-offset: 2px; }
+
+.chat-kosong { margin: auto; padding: 1rem; text-align: center; color: var(--c-redup); }
+
+.chat-gelembung {
+  max-width: min(80%, 460px);
+  padding: .55rem .8rem;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(11, 37, 69, .08);
+  overflow-wrap: anywhere;
+  animation: chat-masuk .25s ease backwards;
+}
+.chat-gelembung p { margin: 0; white-space: pre-wrap; font-size: .95rem; line-height: 1.45; }
+.chat-gelembung small { display: block; margin-top: .2rem; font-size: .72rem; text-align: right; }
+
+.chat-gelembung.saya { align-self: flex-end; background: var(--c-biru); color: #fff; border-bottom-right-radius: 4px; }
+.chat-gelembung.saya small { color: #E8EEF9; }
+.chat-gelembung.lawan { align-self: flex-start; background: #fff; color: var(--c-navy); border: 1px solid var(--c-garis); border-bottom-left-radius: 4px; }
+.chat-gelembung.lawan small { color: var(--c-redup); }
+
+@keyframes chat-masuk { from { opacity: 0; transform: translateY(6px); } }
+
+.chat-form { display: flex; gap: .5rem; align-items: flex-end; margin: 0; }
+.chat-isi {
+  flex: 1; min-width: 0; max-height: 120px; resize: none;
+  padding: .65rem .95rem;
+  border: 1px solid var(--c-garis); border-radius: 18px;
+  background: #fff; color: var(--c-navy);
+  font: inherit; line-height: 1.4;
+}
+.chat-isi:focus-visible { outline: 3px solid #71ADD4; outline-offset: 1px; border-color: var(--c-biru); }
+
+.chat-kirim {
+  flex: none; display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border: 0; border-radius: 50%;
+  background: var(--c-biru); color: #fff; cursor: pointer;
+  transition: background .2s ease;
+}
+.chat-kirim:hover { background: var(--c-biru-tua); }
+.chat-kirim:focus-visible { outline: 3px solid var(--c-navy); outline-offset: 2px; }
+.chat-kirim svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.chat-galat { margin: 0; color: #B3261E; font-size: .85rem; font-weight: 500; }
+.chat-sembunyi { display: none; }
+.chat-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-gelembung { animation: none; }
+  .chat-daftar { scroll-behavior: auto; }
+}

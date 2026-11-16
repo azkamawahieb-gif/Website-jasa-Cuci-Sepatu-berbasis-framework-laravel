@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\Petugas\AkunController;
@@ -55,7 +54,7 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     // Chat pengguna
     Route::get('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'store'])->middleware('throttle:30,1')->name('chat.kirim');
-    Route::get('/chat/pesan', [\App\Http\Controllers\Pengguna\ChatController::class, 'sejak'])->name('chat.pesan');
+    Route::get('/chat/pesan', [\App\Http\Controllers\Pengguna\ChatController::class, 'sejak'])->name('chat.sejak');
 
     // Alamat tersimpan
     Route::get('/profil/alamat', [AlamatController::class, 'index'])->name('alamat.index');
@@ -78,7 +77,7 @@ Route::middleware(['auth', 'role:petugas'])
 
         // Dashboard
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
-        
+
         // Chat dengan pengguna
         Route::get('chat', [\App\Http\Controllers\Petugas\ChatController::class, 'index'])->name('chat.index');
         Route::get('chat/{user}', [\App\Http\Controllers\Petugas\ChatController::class, 'show'])->name('chat.show');

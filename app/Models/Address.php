@@ -51,6 +51,30 @@ class Address extends Model
             . ($wilayah !== '' ? ', ' . $wilayah : '');
     }
 
+    // Data lengkap untuk daftar pilihan dan form ubah di halaman pesanan (JSON).
+    public function ringkas(): array
+    {
+        return [
+            'id' => $this->id,
+            'label' => $this->label,
+            'recipient_name' => $this->recipient_name,
+            'phone' => $this->phone,
+            'address' => $this->address,
+            'detail' => $this->detail,
+            'province' => $this->province,
+            'regency' => $this->regency ?: $this->city,
+            'district' => $this->district,
+            'postal_code' => $this->postal_code,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'maps_url' => $this->maps_url,
+            'wilayah' => $this->wilayah(),
+            'lengkap' => $this->lengkap(),
+            'peta' => $this->petaUrl(),
+            'is_default' => $this->is_default,
+        ];
+    }
+
     public function petaUrl(): ?string
     {
         if ($this->maps_url) {

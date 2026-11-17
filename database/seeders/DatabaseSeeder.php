@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             ['Suede Treatment', 'Perawatan khusus bahan suede dan nubuck.', 60000, 4],
             ['Unyellowing', 'Mengurangi sol yang menguning.', 50000, 4],
         ];
+
         foreach ($layanan as [$nama, $deskripsi, $harga, $hari]) {
             Service::create([
                 'name' => $nama,
@@ -54,6 +55,7 @@ class DatabaseSeeder extends Seeder
             ['Zona 2', 'Radius 3 sampai 7 km', 10000],
             ['Zona 3', 'Radius 7 sampai 12 km', 15000],
         ];
+
         foreach ($zona as [$nama, $deskripsi, $biaya]) {
             DeliveryZone::create([
                 'name' => $nama,
@@ -61,5 +63,8 @@ class DatabaseSeeder extends Seeder
                 'fee' => $biaya,
             ]);
         }
+
+        // Contoh voucher
+        $this->call(VoucherSeeder::class);
     }
 }

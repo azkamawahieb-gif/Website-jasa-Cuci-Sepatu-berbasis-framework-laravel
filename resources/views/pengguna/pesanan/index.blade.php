@@ -82,7 +82,7 @@
           </div>
 
           <div class="pk-status">
-            <span class="badge badge-{{ $o->status->color() }}">{{ $o->status->label() }}</span>
+            <span class="badge badge-{{ $o->status->color() }}">{{ $o->statusLabel() }}</span>
             <span class="progres-mini" aria-hidden="true">
               <span class="progres-isi {{ $o->status->value === 'dibatalkan' ? 'batal' : '' }}" style="--pct: {{ $persen[$o->status->value] ?? 0 }}%"></span>
             </span>

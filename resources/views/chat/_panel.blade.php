@@ -1,4 +1,4 @@
-{{-- Panel chat. Variabel: $pesan (koleksi ChatMessage), $milik (fungsi: pesan ini milik pembaca?),
+﻿{{-- Panel chat. Variabel: $pesan (koleksi ChatMessage), $milik (fungsi: pesan ini milik pembaca?),
      $urlKirim, $urlSejak, $kosongTeks. Id dan atribut data-* dipakai public/js/chat.js. --}}
 <div class="chat" id="chat" data-sejak="{{ $urlSejak }}" data-terakhir="{{ $pesan->last()?->id ?? 0 }}">
   <div class="chat-daftar" id="chat-daftar" tabindex="0" aria-live="polite" aria-label="Percakapan">

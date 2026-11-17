@@ -1,3 +1,4 @@
+
 {{-- Satu kotak sepatu. Atribut data-item, data-nomor, data-hapus dan class js-layanan
      dipakai JavaScript di buat.blade.php: jangan diganti namanya. --}}
 <div class="item-box" data-item>
@@ -11,21 +12,22 @@
       <label for="shoe_name_{{ $i }}">Nama / merek sepatu</label>
       <input type="text" id="shoe_name_{{ $i }}" name="items[{{ $i }}][shoe_name]"
              class="form-control @error('items.' . $i . '.shoe_name') salah @enderror"
-             value="{{ $row['shoe_name'] ?? '' }}" placeholder="Contoh: Nike Air Force 1" required>
+             value="{{ $row['shoe_name'] ?? '' }}" required>
       @error('items.' . $i . '.shoe_name')<p class="pesan-salah" role="alert">{{ $message }}</p>@enderror
     </div>
+
     <div class="form-group">
       <label for="shoe_color_{{ $i }}">Warna</label>
       <input type="text" id="shoe_color_{{ $i }}" name="items[{{ $i }}][shoe_color]" class="form-control"
-             value="{{ $row['shoe_color'] ?? '' }}" placeholder="Putih">
+             value="{{ $row['shoe_color'] ?? '' }}">
     </div>
   </div>
-  
+
   <div class="form-group">
     <label for="shoe_size_{{ $i }}">Ukuran sepatu</label>
     <input type="text" id="shoe_size_{{ $i }}" name="items[{{ $i }}][shoe_size]"
            class="form-control @error('items.' . $i . '.shoe_size') salah @enderror"
-           value="{{ $row['shoe_size'] ?? '' }}" placeholder="Contoh: 42" maxlength="10" inputmode="decimal">
+           value="{{ $row['shoe_size'] ?? '' }}" maxlength="10" inputmode="decimal">
     @error('items.' . $i . '.shoe_size')<p class="pesan-salah" role="alert">{{ $message }}</p>@enderror
   </div>
 

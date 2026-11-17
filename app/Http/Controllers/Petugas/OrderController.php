@@ -81,6 +81,7 @@ class OrderController extends Controller
                 if ($order->payment_status !== 'lunas') {
                     return back()->withErrors(['aksi' => 'Catat pembayaran terlebih dahulu sebelum menyerahkan sepatu.']);
                 }
+
                 $order->ubahStatus(OrderStatus::Selesai, $catatan ?: 'Sepatu diambil pelanggan', $uid);
             }
         } else {
@@ -115,18 +116,22 @@ class OrderController extends Controller
     public function bayar(Request $request, Order $order)
     {
         $data = $request->validate(
-            ['payment_method' => ['required', 'in:tunai,transfer,qris']],
+            ['payment_method' => ['required', 'in:cod,tunai,transfer,qris']],
             ['payment_method.required' => 'Pilih metode pembayaran.']
         );
 
         if ($order->status === OrderStatus::Dibatalkan) {
             return back()->withErrors(['aksi' => 'Pesanan yang dibatalkan tidak bisa dibayar.']);
         }
+
         if ($order->payment_status === 'lunas') {
             return back()->withErrors(['aksi' => 'Pesanan ini sudah lunas.']);
         }
 
-        $order->update(['payment_status' => 'lunas', 'payment_method' => $data['payment_method']]);
+        $order->update([
+            'payment_status' => 'lunas',
+            'payment_method' => $data['payment_method'],
+        ]);
 
         $order->logs()->create([
             'status' => $order->status->value,
@@ -158,6 +163,7 @@ class OrderController extends Controller
                 if ($item->{$kolom}) {
                     Storage::disk('public')->delete($item->{$kolom});
                 }
+
                 $item->{$kolom} = $request->file($kolom)->store($folder, 'public');
             }
         }

@@ -6,7 +6,7 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center my-3">
   <h1 class="h4 mb-0">{{ $order->code }}</h1>
-  <span class="badge text-bg-{{ $order->status->color() }} fs-6">{{ $order->status->label() }}</span>
+  <span class="badge text-bg-{{ $order->status->color() }} fs-6">{{ $order->statusLabel() }}</span>
 </div>
 
 <div class="row g-4">
@@ -107,7 +107,7 @@
         <ul class="list-unstyled mb-0">
           @foreach ($order->logs as $log)
             <li class="mb-3">
-              <strong>{{ $log->status->label() }}</strong>
+              <strong>{{ $order->statusLabel($log->status) }}</strong>
               <div class="small text-body-secondary">
                 {{ $log->created_at->format('d M Y H:i') }}
                 @if ($log->user) &middot; oleh {{ $log->user->name }} @endif
@@ -168,20 +168,38 @@
       <div class="card-body">
         <div class="d-flex justify-content-between"><span>Subtotal layanan</span><span>Rp {{ number_format($order->subtotal, 0, ',', '.') }}</span></div>
         <div class="d-flex justify-content-between"><span>Jemput/antar</span><span>Rp {{ number_format($order->delivery_fee_total, 0, ',', '.') }}</span></div>
-        <div class="d-flex justify-content-between fw-bold border-top mt-2 pt-2"><span>Total</span><span>Rp {{ number_format($order->total, 0, ',', '.') }}</span></div>
+
+        {{-- Diskon voucher --}}
+        @if ($order->discount_total > 0)
+          <div class="d-flex justify-content-between text-success">
+            <span>Diskon voucher @if ($order->voucher_code)({{ $order->voucher_code }})@endif</span>
+            <span>- Rp {{ number_format($order->discount_total, 0, ',', '.') }}</span>
+          </div>
+        @endif
+
+        <div class="d-flex justify-content-between fw-bold border-top mt-2 pt-2">
+          <span>Total</span>
+          <span>Rp {{ number_format($order->total, 0, ',', '.') }}</span>
+        </div>
+
+        {{-- Pilihan metode pembayaran pelanggan --}}
+        @if ($order->payment_status !== 'lunas' && $order->payment_method)
+          <div class="small text-body-secondary mt-2">
+            Pilihan pelanggan: {{ $order->metodeLabel() }}
+          </div>
+        @endif
 
         <div class="mt-3">
           @if ($order->payment_status === 'lunas')
             <span class="badge text-bg-success">Lunas</span>
-            <span class="small text-body-secondary">via {{ $order->payment_method }}</span>
+            <span class="small text-body-secondary">via {{ $order->metodeLabel() }}</span>
           @elseif ($order->status->value !== 'dibatalkan')
             <form method="POST" action="{{ route('petugas.pesanan.bayar', $order) }}">
               @csrf
               <select name="payment_method" class="form-select form-select-sm mb-2" required>
-                <option value="">- Metode pembayaran -</option>
-                <option value="tunai">Tunai</option>
-                <option value="transfer">Transfer</option>
-                <option value="qris">QRIS</option>
+                <option value="cod" @selected(in_array($order->payment_method, ['cod', 'tunai'], true))>COD / Tunai</option>
+                <option value="transfer" @selected($order->payment_method === 'transfer')>Transfer</option>
+                <option value="qris" @selected($order->payment_method === 'qris')>QRIS</option>
               </select>
               <button class="btn btn-outline-success btn-sm w-100">Catat Lunas</button>
             </form>

@@ -599,3 +599,158 @@
 @media (max-width: 480px) {
   .fa-baris { grid-template-columns: 1fr; }
 }
+/* Kotak penjelasan saat sepatu siap (diambil atau diantar) */
+.info-langkah {
+  display: flex; flex-direction: column; gap: .2rem; margin: .9rem 0; padding: .85rem 1.1rem;
+  border-radius: 16px; background: #E8FFF7; border: 1px solid #90E1DA; color: #0B2545;
+}
+.info-langkah strong { font-weight: 800; }
+/* =========================================================
+   REVISI HALAMAN PESANAN: voucher, pembayaran, ringkasan bawah
+   ========================================================= */
+.area .sembunyi { display: none !important; }
+
+.pesan-kolom { display: grid; gap: 1.2rem; margin-top: 1.2rem; min-width: 0; }
+.pesan-kolom > * { min-width: 0; }
+
+/* Tombol Kantor / Rumah (bisa ditekan, dan dibatalkan dengan menekan lagi) */
+.pilih-chip { position: relative; display: inline-block; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+.pilih-chip input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; overflow: hidden; clip: rect(0 0 0 0); }
+.pilih-chip span {
+  display: inline-block; padding: .5rem 1.25rem;
+  border: 1.5px solid var(--garis); border-radius: var(--radius-pil);
+  background: var(--latar); color: var(--navy);
+  font-size: .9rem; font-weight: 600;
+  transition: border-color var(--cepat) var(--ease), background var(--cepat) var(--ease), transform var(--cepat) var(--ease);
+}
+.pilih-chip:hover span { border-color: var(--sky); transform: translateY(-1px); }
+.pilih-chip:active span { transform: scale(.97); }
+.pilih-chip input:checked + span { background: var(--mint-muda); border-color: var(--biru); color: var(--biru); box-shadow: 0 0 0 3px rgba(46, 90, 172, .12); }
+.pilih-chip input:focus-visible + span { outline: 3px solid var(--sky); outline-offset: 2px; }
+.tandai-pilih, .app-daftar { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* Tombol "Ubah" pada pilihan alamat */
+.alamat-ubah-btn {
+  flex: none; align-self: flex-start; margin-left: auto; padding: .25rem .8rem;
+  background: #fff; border: 1.5px solid var(--biru); border-radius: var(--radius-pil);
+  color: var(--biru); font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer;
+  transition: background var(--cepat) var(--ease), color var(--cepat) var(--ease);
+}
+.alamat-ubah-btn:hover { background: var(--biru); color: #fff; }
+.alamat-ubah-btn:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+
+/* Voucher */
+.voucher-input {
+  display: flex; align-items: center; gap: .6rem; padding: .35rem .4rem .35rem .8rem;
+  background: var(--latar); border: 1.5px dashed var(--sky); border-radius: 14px;
+  transition: border-color var(--cepat) var(--ease), background var(--cepat) var(--ease);
+}
+.voucher-input:focus-within { border-style: solid; border-color: var(--biru); background: #fff; }
+.voucher-input svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--biru); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.voucher-input .form-control { flex: 1; min-width: 0; border: 0; background: transparent; box-shadow: none; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.voucher-input .form-control:focus { outline: none; }
+.voucher-input .btn { flex: none; }
+.voucher-pesan { min-height: 1.2rem; margin-top: .5rem; font-size: .88rem; font-weight: 600; color: var(--redup); }
+.voucher-pesan.sukses { color: #12714A; }
+.voucher-pesan.galat { color: #B3261E; }
+.voucher-pesan.peringatan { color: #8A5A00; }
+.voucher-aktif {
+  display: flex; align-items: center; gap: .8rem; margin-top: .5rem; padding: .7rem .9rem;
+  background: var(--mint-muda); border: 1.5px solid var(--cyan); border-radius: 14px; animation: naik .35s var(--ease);
+}
+.voucher-aktif.sembunyi { display: none; }
+.voucher-tag { flex: none; display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--biru); color: #fff; font-weight: 800; }
+.voucher-info { display: grid; min-width: 0; }
+.voucher-info strong { letter-spacing: .05em; color: var(--navy); }
+.voucher-info small { color: var(--redup); overflow-wrap: anywhere; }
+.voucher-aktif .link-btn { margin-left: auto; width: auto; }
+
+/* Metode pembayaran */
+.bayar-pilihan { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.bayar-kartu { position: relative; display: block; cursor: pointer; }
+.bayar-kartu input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; clip: rect(0 0 0 0); }
+.bayar-isi {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: .6rem; height: 100%;
+  padding: 1rem; background: var(--putih); border: 1.5px solid var(--garis); border-radius: 16px;
+  transition: border-color var(--cepat) var(--ease), background var(--cepat) var(--ease), box-shadow var(--sedang) var(--ease), transform var(--cepat) var(--ease);
+}
+.bayar-kartu:hover .bayar-isi { border-color: var(--sky); transform: translateY(-2px); box-shadow: var(--bayangan-kecil); }
+.bayar-kartu input:checked + .bayar-isi { border-color: var(--biru); background: var(--mint-muda); box-shadow: 0 0 0 3px rgba(46, 90, 172, .14); }
+.bayar-kartu input:focus-visible + .bayar-isi { outline: 3px solid var(--sky); outline-offset: 2px; }
+.bayar-ikon { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 12px; background: var(--mint-muda); color: var(--biru); }
+.bayar-ikon svg { width: 1.4rem; height: 1.4rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bayar-kartu input:checked + .bayar-isi .bayar-ikon { background: var(--biru); color: #fff; }
+.bayar-teks { display: grid; gap: .15rem; }
+.bayar-teks strong { color: var(--navy); font-size: 1rem; }
+.bayar-teks small { color: var(--redup); font-size: .8rem; line-height: 1.35; }
+.bayar-centang {
+  position: absolute; top: .7rem; right: .7rem; display: grid; place-items: center; width: 1.4rem; height: 1.4rem;
+  border-radius: 50%; background: var(--biru); color: #fff; opacity: 0; transform: scale(.5);
+  transition: opacity var(--cepat) var(--ease), transform var(--cepat) var(--ease);
+}
+.bayar-centang svg { width: .85rem; height: .85rem; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.bayar-kartu input:checked + .bayar-isi .bayar-centang { opacity: 1; transform: scale(1); }
+
+.bayar-panel { display: block; margin: 1rem 0 0; padding: 1rem; min-width: 0; background: var(--latar); border: 1.5px solid var(--garis); border-radius: 16px; animation: naik .35s var(--ease); }
+.bayar-panel > legend { padding: 0 .4rem; font-weight: 700; font-size: .9rem; color: var(--navy); }
+.bayar-catatan { margin-top: .8rem; font-size: .88rem; line-height: 1.5; color: var(--redup); }
+.bayar-panel > .bayar-catatan:first-child { margin-top: 0; }
+
+.bank-daftar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+.bank-kartu { position: relative; display: block; cursor: pointer; }
+.bank-kartu input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; clip: rect(0 0 0 0); }
+.bank-isi {
+  display: flex; align-items: center; gap: .7rem; padding: .7rem .8rem; background: var(--putih);
+  border: 1.5px solid var(--garis); border-radius: 12px;
+  transition: border-color var(--cepat) var(--ease), background var(--cepat) var(--ease);
+}
+.bank-kartu:hover .bank-isi { border-color: var(--sky); }
+.bank-kartu input:checked + .bank-isi { border-color: var(--biru); background: var(--mint-muda); }
+.bank-kartu input:focus-visible + .bank-isi { outline: 3px solid var(--sky); outline-offset: 2px; }
+.bank-logo { flex: none; display: grid; place-items: center; min-width: 3rem; height: 2.2rem; padding: 0 .5rem; border-radius: 8px; background: var(--navy); color: #fff; font-size: .78rem; font-weight: 800; letter-spacing: .03em; }
+.bank-data { display: grid; min-width: 0; }
+.bank-data strong { color: var(--navy); font-size: .95rem; letter-spacing: .03em; overflow-wrap: anywhere; }
+.bank-data small { color: var(--redup); font-size: .78rem; }
+.bank-salin { flex: none; margin-left: auto; padding: .25rem .7rem; background: #fff; border: 1.5px solid var(--garis); border-radius: var(--radius-pil); color: var(--biru); font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
+.bank-salin:hover { border-color: var(--biru); }
+
+.qris-kotak { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; }
+.qris-gambar { flex: none; width: 168px; padding: .6rem; background: #fff; border: 1.5px solid var(--garis); border-radius: 16px; box-shadow: var(--bayangan-kecil); }
+.qris-gambar img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.qris-kosong { display: grid; place-items: center; align-content: center; gap: .4rem; aspect-ratio: 1; border: 2px dashed var(--sky); border-radius: 10px; color: var(--redup); font-size: .8rem; font-weight: 600; text-align: center; }
+.qris-kosong svg { width: 3.4rem; height: 3.4rem; fill: none; stroke: var(--sky); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.qris-info { display: grid; gap: .25rem; justify-items: start; }
+.qris-info strong { font-size: 1.05rem; color: var(--navy); }
+.qris-total { font-size: 1.6rem; font-weight: 800; color: var(--biru); }
+.qris-judul { display: block; margin: 1rem 0 .5rem; font-weight: 700; font-size: .9rem; color: var(--navy); }
+
+/* Ringkasan pembayaran: paling bawah, selebar halaman */
+.ringkas-bawah { padding: clamp(1.1rem, 3vw, 1.6rem); background: var(--putih); border: 1px solid var(--garis); border-radius: var(--radius); box-shadow: var(--bayangan); }
+.ringkas-kepala { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: 1rem; }
+.ringkas-kepala h2 { font-size: 1.15rem; }
+.ringkas-metode { padding: .3rem .9rem; border-radius: var(--radius-pil); background: var(--mint-muda); border: 1px solid #BDEFD6; color: var(--navy); font-size: .85rem; font-weight: 700; }
+.ringkas-isi { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.2rem; align-items: stretch; }
+.ringkas-bawah .ringkasan { margin-top: 0; padding: 1rem 1.1rem; background: var(--mint-muda); border: 1px solid #BDEFD6; border-radius: 14px; }
+.ringkas-bawah .baris { gap: 1rem; font-size: .95rem; }
+.ringkas-bawah .baris-diskon { color: #12714A; font-weight: 600; }
+.ringkas-bawah .baris.total { font-size: 1.25rem; color: var(--navy); border-top-color: #BDEFD6; }
+.ringkas-bawah .baris.total span:last-child { color: var(--biru); }
+.ringkas-aksi { display: flex; flex-direction: column; justify-content: center; gap: .8rem; }
+.ringkas-aksi .bantu { color: var(--redup); line-height: 1.5; }
+.ringkas-aksi .btn-block { padding: .95rem; font-size: 1.05rem; }
+
+@media (max-width: 760px) {
+  .bayar-pilihan { grid-template-columns: 1fr; }
+  .bayar-isi { flex-direction: row; align-items: center; }
+  .bayar-centang { top: 50%; margin-top: -.7rem; }
+  .bank-daftar { grid-template-columns: 1fr; }
+  .ringkas-isi { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .qris-kotak { justify-content: center; }
+  .qris-info { justify-items: center; text-align: center; }
+  .alamat-opsi { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bayar-kartu:hover .bayar-isi, .pilih-chip:hover span { transform: none; }
+}

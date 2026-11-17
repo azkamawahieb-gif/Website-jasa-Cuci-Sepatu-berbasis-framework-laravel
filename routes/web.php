@@ -37,6 +37,8 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     // Pesanan baru
     Route::get('/pesanan/buat', [PesananController::class, 'create'])->name('pesanan.buat');
     Route::post('/pesanan', [PesananController::class, 'store'])->name('pesanan.simpan');
+    Route::post('/pesanan/voucher', [\App\Http\Controllers\Pengguna\VoucherController::class, 'cek'])
+        ->middleware('throttle:30,1')->name('pesanan.voucher');
 
     // Profil
     Route::get('/profil', [ProfilController::class, 'edit'])->name('profil');
@@ -47,9 +49,6 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     // Pengaturan
     Route::get('/pengaturan', [\App\Http\Controllers\Pengguna\PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::post('/pengaturan/ganti-akun', [\App\Http\Controllers\Pengguna\PengaturanController::class, 'gantiAkun'])->name('pengaturan.ganti');
-
-    // Notifikasi
-    Route::put('/pengaturan/notifikasi', [\App\Http\Controllers\Pengguna\NotifikasiController::class, 'simpan'])->name('notifikasi.simpan');
 
     // Chat pengguna
     Route::get('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'index'])->name('chat.index');

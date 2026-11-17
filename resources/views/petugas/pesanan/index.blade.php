@@ -53,7 +53,7 @@
               @endforelse
             </td>
             <td class="text-end">Rp {{ number_format($o->total, 0, ',', '.') }}</td>
-            <td><span class="badge text-bg-{{ $o->status->color() }}">{{ $o->status->label() }}</span></td>
+            <td><span class="badge text-bg-{{ $o->status->color() }}">{{ $o->statusLabel() }}</span></td>
             <td>
               <span class="badge text-bg-{{ $o->payment_status === 'lunas' ? 'success' : 'warning' }}">
                 {{ $o->payment_status === 'lunas' ? 'Lunas' : 'Belum' }}

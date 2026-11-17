@@ -1,3 +1,4 @@
+
 {{-- Form satu alamat gaya Shopee. Dipakai di halaman Alamat Saya (tambah dan ubah) dan di kotak
      "Tambah alamat baru" pada form pesanan.
      Variabel: $p (awalan id, unik per form), $alamat (Address atau null), $aksi (URL), $metode ('PUT' atau null),
@@ -24,28 +25,28 @@
         <label for="{{ $p }}_province">Provinsi</label>
         <input type="text" id="{{ $p }}_province" name="province" maxlength="100" required
                class="form-control @if ($galat('province')) salah @endif"
-               value="{{ $nilai('province', $alamat?->province) }}" placeholder="Contoh: Riau">
+               value="{{ $nilai('province', $alamat?->province) }}">
         @if ($galat('province'))<p class="pesan-salah" role="alert">{{ $galat('province') }}</p>@endif
       </div>
       <div class="form-group">
         <label for="{{ $p }}_regency">Kabupaten / Kota</label>
         <input type="text" id="{{ $p }}_regency" name="regency" maxlength="100" required
                class="form-control @if ($galat('regency')) salah @endif"
-               value="{{ $nilai('regency', $alamat?->regency ?? $alamat?->city) }}" placeholder="Contoh: Kota Pekanbaru">
+               value="{{ $nilai('regency', $alamat?->regency ?? $alamat?->city) }}">
         @if ($galat('regency'))<p class="pesan-salah" role="alert">{{ $galat('regency') }}</p>@endif
       </div>
       <div class="form-group">
         <label for="{{ $p }}_district">Kecamatan</label>
         <input type="text" id="{{ $p }}_district" name="district" maxlength="100" required
                class="form-control @if ($galat('district')) salah @endif"
-               value="{{ $nilai('district', $alamat?->district) }}" placeholder="Contoh: Senapelan">
+               value="{{ $nilai('district', $alamat?->district) }}">
         @if ($galat('district'))<p class="pesan-salah" role="alert">{{ $galat('district') }}</p>@endif
       </div>
       <div class="form-group">
         <label for="{{ $p }}_postal_code">Kode Pos</label>
         <input type="text" id="{{ $p }}_postal_code" name="postal_code" inputmode="numeric" maxlength="5" required
                class="form-control @if ($galat('postal_code')) salah @endif"
-               value="{{ $nilai('postal_code', $alamat?->postal_code) }}" placeholder="28151">
+               value="{{ $nilai('postal_code', $alamat?->postal_code) }}">
         @if ($galat('postal_code'))<p class="pesan-salah" role="alert">{{ $galat('postal_code') }}</p>@endif
       </div>
     </div>
@@ -53,15 +54,14 @@
     <div class="form-group">
       <label for="{{ $p }}_address">Nama Jalan, Gedung, No. Rumah</label>
       <textarea id="{{ $p }}_address" name="address" rows="2" maxlength="500" required
-                class="form-control @if ($galat('address')) salah @endif"
-                placeholder="Contoh: Jalan Singkawang Gang Mahoni No. 4">{{ $nilai('address', $alamat?->address) }}</textarea>
+                class="form-control @if ($galat('address')) salah @endif">{{ $nilai('address', $alamat?->address) }}</textarea>
       @if ($galat('address'))<p class="pesan-salah" role="alert">{{ $galat('address') }}</p>@endif
     </div>
 
     <div class="form-group">
       <label for="{{ $p }}_detail">Detail Lainnya (Cth: Blok / Unit No., Patokan)</label>
       <input type="text" id="{{ $p }}_detail" name="detail" maxlength="200" class="form-control"
-             value="{{ $nilai('detail', $alamat?->detail) }}" placeholder="Contoh: Pagar hijau, dekat masjid">
+             value="{{ $nilai('detail', $alamat?->detail) }}">
     </div>
   </section>
 
@@ -102,7 +102,7 @@
       <span id="{{ $p }}_h_tandai" class="tandai-judul">Tandai Sebagai:</span>
       <div class="tandai-pilih" role="radiogroup" aria-labelledby="{{ $p }}_h_tandai">
         @foreach (['Kantor', 'Rumah'] as $opsi)
-          <label class="chip">
+          <label class="pilih-chip">
             <input type="radio" name="label" value="{{ $opsi }}" @checked($labelAwal === $opsi)>
             <span>{{ $opsi }}</span>
           </label>
@@ -129,7 +129,7 @@
       <label for="{{ $p }}_maps_url">Tautan Google Maps</label>
       <input type="url" id="{{ $p }}_maps_url" name="maps_url" maxlength="500" data-url
              class="form-control @if ($galat('maps_url')) salah @endif"
-             value="{{ $nilai('maps_url', $alamat?->maps_url) }}" placeholder="https://maps.app.goo.gl/...">
+             value="{{ $nilai('maps_url', $alamat?->maps_url) }}">
       @if ($galat('maps_url'))<p class="pesan-salah" role="alert">{{ $galat('maps_url') }}</p>@endif
     </div>
 

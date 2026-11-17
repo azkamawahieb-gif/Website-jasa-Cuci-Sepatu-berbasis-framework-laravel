@@ -55,6 +55,10 @@ class AlamatController extends Controller
             $this->jadikanUtama($alamat);
         }
 
+        if ($request->expectsJson()) {
+            return response()->json(['alamat' => $this->ringkas($alamat->fresh())]);
+        }
+
         return redirect()->route('alamat.index')->with('success', 'Alamat diperbarui.');
     }
 
@@ -75,6 +79,7 @@ class AlamatController extends Controller
 
         if ($adalahUtama) {
             $pengganti = $request->user()->addresses()->latest('id')->first();
+
             if ($pengganti) {
                 $this->jadikanUtama($pengganti);
             }
@@ -91,6 +96,7 @@ class AlamatController extends Controller
     private function jadikanUtama(Address $alamat): void
     {
         Address::where('user_id', $alamat->user_id)->update(['is_default' => false]);
+
         $alamat->update(['is_default' => true]);
     }
 
@@ -129,19 +135,9 @@ class AlamatController extends Controller
         return $data;
     }
 
-    // Data singkat untuk daftar pilihan di form pesanan (balasan JSON).
+    // Data untuk daftar pilihan di form pesanan (balasan JSON).
     private function ringkas(Address $a): array
     {
-        return [
-            'id' => $a->id,
-            'label' => $a->label,
-            'recipient_name' => $a->recipient_name,
-            'phone' => $a->phone,
-            'address' => $a->address,
-            'wilayah' => $a->wilayah(),
-            'lengkap' => $a->lengkap(),
-            'peta' => $a->petaUrl(),
-            'is_default' => $a->is_default,
-        ];
+        return $a->ringkas();
     }
 }

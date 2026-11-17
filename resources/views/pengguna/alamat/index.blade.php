@@ -42,7 +42,7 @@
                 <button type="submit" class="link-btn">Jadikan utama</button>
               </form>
             @endunless
-            <form method="POST" action="{{ route('alamat.hapus', $a) }}" class="form-inline"
+            <form method="POST" action="{{ route('alamat.destroy', $a) }}" class="form-inline"
                   onsubmit="return confirm('Hapus alamat ini?')">
               @csrf @method('DELETE')
               <button type="submit" class="link-btn teks-bahaya">Hapus</button>

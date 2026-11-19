@@ -7,7 +7,8 @@
 <div class="card" style="max-width: 640px;">
   <div class="card-body">
     <form method="POST"
-          action="{{ $service->exists ? route('petugas.layanan.update', $service) : route('petugas.layanan.store') }}">
+          action="{{ $service->exists ? route('petugas.layanan.update', $service) : route('petugas.layanan.store') }}"
+          enctype="multipart/form-data">
       @csrf
       @if ($service->exists) @method('PUT') @endif
 
@@ -21,6 +22,28 @@
         <label for="description" class="form-label">Deskripsi</label>
         <textarea id="description" name="description" rows="3" class="form-control"
                   placeholder="Contoh: Cocok untuk sneakers kanvas">{{ old('description', $service->description) }}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="photo" class="form-label">Foto layanan</label>
+        @if ($service->exists && ($fotoSekarang = $service->fotoUrl()))
+          <div class="mb-2">
+            <img src="{{ $fotoSekarang }}" alt="{{ $service->name }}" class="rounded border"
+                 style="width: 160px; height: 120px; object-fit: cover;">
+          </div>
+        @endif
+        <img id="foto-preview" alt="Pratinjau foto" class="rounded border mb-2 d-none"
+             style="width: 160px; height: 120px; object-fit: cover;">
+        <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp"
+               class="form-control @error('photo') is-invalid @enderror">
+        @error('photo') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        <div class="form-text">JPG, PNG, atau WEBP, maksimal 2 MB. Disarankan rasio 4:3. Tampil di kartu layanan pada beranda.</div>
+        @if ($service->exists && $service->photo)
+          <div class="form-check mt-2">
+            <input type="checkbox" id="hapus_foto" name="hapus_foto" value="1" class="form-check-input">
+            <label for="hapus_foto" class="form-check-label">Hapus foto yang diunggah</label>
+          </div>
+        @endif
       </div>
 
       <div class="row">
@@ -48,4 +71,14 @@
     </form>
   </div>
 </div>
+
+<script>
+  document.getElementById('photo').addEventListener('change', function () {
+    var img = document.getElementById('foto-preview');
+    var f = this.files && this.files[0];
+    if (!f) { img.classList.add('d-none'); return; }
+    img.src = URL.createObjectURL(f);
+    img.classList.remove('d-none');
+  });
+</script>
 @endsection

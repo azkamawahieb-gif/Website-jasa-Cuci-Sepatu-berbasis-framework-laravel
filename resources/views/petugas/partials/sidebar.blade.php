@@ -1,3 +1,4 @@
+
 @php
   $chatBaru = \App\Models\ChatMessage::whereColumn('sender_id', 'user_id')->whereNull('read_at')->count();
 
@@ -17,6 +18,10 @@
     ['judul' => 'Data Master', 'item' => [
       ['Layanan', 'petugas.layanan.index', 'petugas.layanan.*',
         '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>'],
+
+      ['Voucher', 'petugas.voucher.index', 'petugas.voucher.*',
+        '<path d="M2 9a3 3 0 0 1 0 6v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-3a3 3 0 0 1 0-6V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/><path d="M13 5v2"/><path d="M13 11v2"/><path d="M13 17v2"/>'],
+
       ['Zona Antar', 'petugas.zona.index', 'petugas.zona.*',
         '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>'],
       ['Pengguna', 'petugas.pengguna.index', 'petugas.pengguna.*',
@@ -44,6 +49,7 @@
              href="{{ $rute ? route($rute) : '#' }}">
             <svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true">{!! $ikon !!}</svg>
             {{ $label }}
+
             @if ($rute === 'petugas.chat.index' && $chatBaru > 0)
               <span class="badge text-bg-danger ms-auto">{{ $chatBaru }}</span>
             @endif

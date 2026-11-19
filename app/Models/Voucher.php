@@ -7,8 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Voucher extends Model
 {
     protected $fillable = [
-        'code', 'description', 'type', 'value', 'min_order', 'max_discount',
-        'quota', 'used_count', 'starts_at', 'ends_at', 'is_active',
+        'code',
+        'description',
+        'type',
+        'value',
+        'min_order',
+        'max_discount',
+        'quota',
+        'used_count',
+        'starts_at',
+        'ends_at',
+        'is_active',
     ];
 
     protected function casts(): array
@@ -63,6 +72,28 @@ class Voucher extends Model
         }
 
         return max(0, min($potongan, $subtotal));
+    }
+
+    // Label dan warna badge untuk daftar voucher di panel petugas.
+    public function status(): array
+    {
+        if (! $this->is_active) {
+            return ['Nonaktif', 'secondary'];
+        }
+
+        if ($this->ends_at && $this->ends_at->isPast()) {
+            return ['Kedaluwarsa', 'danger'];
+        }
+
+        if ($this->starts_at && $this->starts_at->isFuture()) {
+            return ['Belum mulai', 'info'];
+        }
+
+        if ($this->quota !== null && $this->used_count >= $this->quota) {
+            return ['Kuota habis', 'warning'];
+        }
+
+        return ['Berlaku', 'success'];
     }
 
     // Teks singkat: "Diskon 10% (maks. Rp 15.000)"

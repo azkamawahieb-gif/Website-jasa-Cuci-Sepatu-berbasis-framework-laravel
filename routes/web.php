@@ -1,5 +1,7 @@
+
 <?php
 
+use App\Http\Controllers\Petugas\VoucherController;
 use App\Http\Controllers\Petugas\AkunController;
 use App\Http\Controllers\Petugas\UserController;
 use App\Http\Controllers\Petugas\DashboardController;
@@ -110,6 +112,10 @@ Route::middleware(['auth', 'role:petugas'])
         Route::resource('layanan', ServiceController::class)
             ->parameters(['layanan' => 'service'])
             ->except('show');
+
+        // Master data voucher
+        Route::patch('voucher/{voucher}/toggle', [VoucherController::class, 'toggle'])->name('voucher.toggle');
+        Route::resource('voucher', VoucherController::class)->except('show');
 
         // Master data zona
         Route::patch('zona/{zone}/toggle', [DeliveryZoneController::class, 'toggle'])->name('zona.toggle');

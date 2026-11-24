@@ -32,7 +32,7 @@
         <section class="langkah-panel anim-naik" style="--i:1" aria-labelledby="judul-sepatu">
           <span class="langkah-nomor" aria-hidden="true">1</span>
           <h2 id="judul-sepatu">Sepatu</h2>
-          <p class="sub">Tambahkan satu atau beberapa pasang sepatu. Foto kondisi awal membantu kami mencatat keadaannya.</p>
+          <p class="sub"></p>
 
           <div id="daftar-sepatu">
             @foreach ($baris as $i => $row)
@@ -200,13 +200,16 @@
           @enderror
         </section>
 
-        {{-- Langkah 5: Metode pembayaran --}}
+                {{-- Langkah 5: Metode pembayaran --}}
         @php
           $metodeBayar = config('pembayaran.metode');
+          $daftarBank = \App\Models\PaymentAccount::aktif()->orderBy('bank_name')->get();
           $metodeDipilih = old('payment_method', 'cod');
           $channelLama = old('payment_channel');
-          $qrisFile = config('pembayaran.qris.gambar');
-          $qrisAda = $qrisFile && file_exists(public_path($qrisFile));
+          $qrisAktif = \App\Models\QrisCode::aktif()->first();
+          $qrisFile = $qrisAktif ? 'img/qris/'.$qrisAktif->image : null;
+          $qrisAda = $qrisFile && is_file(public_path($qrisFile));
+          $qrisNama = $qrisAktif->name ?? config('pembayaran.qris.merchant');
         @endphp
         <section class="langkah-panel anim-naik" style="--i:5" aria-labelledby="judul-bayar">
           <span class="langkah-nomor" aria-hidden="true">5</span>
@@ -244,19 +247,22 @@
           <fieldset class="bayar-panel {{ $metodeDipilih === 'transfer' ? '' : 'sembunyi' }}" data-panel="transfer" @disabled($metodeDipilih !== 'transfer')>
             <legend>Pilih bank tujuan</legend>
             <div class="bank-daftar">
-              @foreach (config('pembayaran.bank') as $b)
+              @foreach ($daftarBank as $b)
                 <label class="bank-kartu">
-                  <input type="radio" name="payment_channel" value="{{ $b['nama'] }}" @checked($metodeDipilih === 'transfer' && $channelLama === $b['nama'])>
+                  <input type="radio" name="payment_channel" value="{{ $b->bank_name }}" @checked($metodeDipilih === 'transfer' && $channelLama === $b->bank_name)>
                   <span class="bank-isi">
-                    <span class="bank-logo" aria-hidden="true">{{ $b['nama'] }}</span>
+                    <span class="bank-logo" aria-hidden="true">{{ $b->bank_name }}</span>
                     <span class="bank-data">
-                      <strong>{{ $b['rekening'] }}</strong>
-                      <small>a.n. {{ $b['atas_nama'] }}</small>
+                      <strong>{{ $b->account_number }}</strong>
+                      <small>a.n. {{ $b->account_name }}</small>
                     </span>
-                    <button type="button" class="bank-salin" data-salin="{{ $b['rekening'] }}">Salin</button>
+                    <button type="button" class="bank-salin" data-salin="{{ $b->account_number }}">Salin</button>
                   </span>
                 </label>
               @endforeach
+              @if ($daftarBank->isEmpty())
+                <p class="bayar-catatan">Belum ada rekening tersedia. Pilih metode lain atau hubungi petugas lewat Chat.</p>
+              @endif
             </div>
             @error('payment_channel')<p class="pesan-salah" role="alert">{{ $message }}</p>@enderror
             <p class="bayar-catatan">Transfer sesuai total setelah pesanan dikonfirmasi petugas, lalu kirim bukti transfer lewat menu <a href="{{ route('chat.index') }}">Chat</a>.</p>
@@ -268,7 +274,7 @@
             <div class="qris-kotak">
               <div class="qris-gambar">
                 @if ($qrisAda)
-                  <img src="{{ asset($qrisFile) }}" alt="Kode QRIS {{ config('pembayaran.qris.merchant') }}" loading="lazy">
+                  <img src="{{ asset($qrisFile) }}" alt="Kode QRIS {{ $qrisNama }}" loading="lazy">
                 @else
                   <div class="qris-kosong" role="img" aria-label="Kode QRIS belum dipasang">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/><path d="M14 14h2.5v2.5H14zM18.5 14v.01M14 19v.01M17 18.5h3.5V21"/></svg>
@@ -277,7 +283,7 @@
                 @endif
               </div>
               <div class="qris-info">
-                <strong>{{ config('pembayaran.qris.merchant') }}</strong>
+                <strong>{{ $qrisNama }}</strong>
                 <span class="muted">Total yang dibayar</span>
                 <span class="qris-total" id="qris-total">Rp 0</span>
                 @if ($qrisAda)
@@ -288,10 +294,15 @@
 
             <span class="qris-judul" id="judul-aplikasi">Aplikasi yang akan dipakai (opsional)</span>
             <div class="app-daftar" role="radiogroup" aria-labelledby="judul-aplikasi">
-              @foreach (config('pembayaran.qris.aplikasi') as $app)
+              @foreach (config('pembayaran.qris.aplikasi') as $app => $logo)
+                @php $adaLogo = $logo && is_file(public_path($logo)); @endphp
                 <label class="pilih-chip">
                   <input type="radio" name="payment_channel" value="{{ $app }}" @checked($metodeDipilih === 'qris' && $channelLama === $app)>
-                  <span>{{ $app }}</span>
+                  @if ($adaLogo)
+                    <span class="chip-logo"><img src="{{ asset($logo) }}" alt="{{ $app }}" loading="lazy"></span>
+                  @else
+                    <span>{{ $app }}</span>
+                  @endif
                 </label>
               @endforeach
             </div>

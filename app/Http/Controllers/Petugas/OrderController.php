@@ -54,6 +54,18 @@ class OrderController extends Controller
             'bisaBatal' => $this->bisaBatal($order),
         ]);
     }
+        // Cetak bukti pembayaran (atau tagihan bila belum lunas)
+    public function cetak(Order $order)
+    {
+        $order->load('user', 'items.service', 'deliveries.zone', 'logs');
+
+        $lunas = $order->payment_status === 'lunas';
+        $tanggalBayar = $order->logs
+            ->first(fn ($log) => str_starts_with((string) $log->note, 'Pembayaran lunas'))
+            ?->created_at;
+
+        return view('petugas.pesanan.cetak', compact('order', 'lunas', 'tanggalBayar'));
+    }
 
     // Langkah berikutnya sesuai status saat ini
     public function lanjut(Request $request, Order $order)

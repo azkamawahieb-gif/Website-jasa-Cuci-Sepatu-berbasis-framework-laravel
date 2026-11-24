@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -31,6 +32,14 @@ return [
     'qris' => [
         'merchant' => 'Cucci.in',
         'gambar' => 'images/qris.png',
-        'aplikasi' => ['Dana', 'GoPay', 'OVO', 'ShopeePay', 'LinkAja', 'BCA Mobile', 'Livin\' Mandiri', 'Lainnya'],
+
+        // Nama aplikasi => file logo (di folder public).
+        // Bila file belum ada, tampil teks nama.
+        'aplikasi' => [
+            'Dana' => 'img/pembayaran/dana.png',
+            'GoPay' => 'img/pembayaran/gopay.png',
+            'OVO' => 'img/pembayaran/ovo.png',
+            'ShopeePay' => 'img/pembayaran/shopeepay.png',
+        ],
     ],
 ];

@@ -1,4 +1,3 @@
-
 @extends('layouts.pengguna')
 @section('title', 'Beranda')
 
@@ -18,51 +17,52 @@
     <a href="{{ route('pesanan.buat') }}" class="btn btn-lg">Pesan Sekarang</a>
   </div>
 
-  {{-- Ilustrasi dekoratif: platform isometrik, sepatu, chip kaca, gelembung --}}
-  <div class="ilustrasi anim-naik" style="--i: 5" aria-hidden="true">
-    <svg viewBox="0 0 520 330" focusable="false">
-      <ellipse cx="260" cy="302" rx="215" ry="24" fill="#0B2545" opacity=".12"/>
+  {{-- ================= SLIDER FOTO HERO ================= --}}
+  @php
+    // Foto slider: semua gambar di public/img/hero (urut nama file)
+    $dirHero = public_path('img/hero');
+    $fotoHero = collect(is_dir($dirHero) ? scandir($dirHero) : [])
+      ->filter(fn ($f) => preg_match('/\.(jpe?g|png|webp)$/i', $f))
+      ->sort(SORT_NATURAL | SORT_FLAG_CASE)->values();
+  @endphp
 
-      <polygon points="60,215 260,285 260,305 60,235" fill="#90E1DA"/>
-      <polygon points="460,215 260,285 260,305 460,235" fill="#71ADD4"/>
-      <polygon points="60,215 260,145 460,215 260,285" fill="#E8FFF7"/>
+  <div class="ilustrasi ilustrasi-foto anim-naik" style="--i: 5">
+    <div class="hero-slider" data-slider role="region" aria-roledescription="carousel" aria-label="Foto hasil cuci sepatu">
+      <div class="hs-track" tabindex="0">
+        @forelse ($fotoHero as $berkas)
+          <figure class="hs-slide" aria-roledescription="slide" aria-label="Foto {{ $loop->iteration }} dari {{ $loop->count }}">
+            <img src="{{ asset('img/hero/'.rawurlencode($berkas)) }}" alt="Foto layanan Cucci.in {{ $loop->iteration }}"
+                 @if ($loop->first) fetchpriority="high" @else loading="lazy" @endif decoding="async">
+          </figure>
+        @empty
+          <figure class="hs-slide hs-kosong">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-8 9"/></svg>
+            <span>Foto segera hadir</span>
+          </figure>
+        @endforelse
+      </div>
 
-      <polygon points="120,197 260,246 260,264 120,215" fill="#80C6D8"/>
-      <polygon points="400,197 260,246 260,264 400,215" fill="#6394D3"/>
-      <polygon points="120,197 260,148 400,197 260,246" fill="#FFFFFF"/>
-
-      <g class="ngambang">
-        <polygon points="176,183 260,212 260,226 176,197" fill="#71ADD4"/>
-        <polygon points="344,183 260,212 260,226 344,197" fill="#2D5BB0"/>
-        <polygon points="176,183 260,154 344,183 260,212" fill="#E8FFF7"/>
-
-        <g transform="translate(260 183) scale(.9)">
-          <ellipse cx="0" cy="2" rx="60" ry="8" fill="#0B2545" opacity=".14"/>
-          <path d="M-60 -10 L-60 -34 C-60 -40 -55 -44 -49 -44 L-30 -46 C-24 -46 -20 -42 -16 -38 C-8 -28 4 -24 18 -22 C38 -19 60 -17 62 -10 Z" fill="#fff" stroke="#2D5BB0" stroke-width="2.4" stroke-linejoin="round"/>
-          <path d="M-48 -27 C-30 -23 -10 -20 10 -14" fill="none" stroke="#6394D3" stroke-width="3" stroke-linecap="round"/>
-          <path d="M-20 -40 l6 7 M-12 -36 l6 7 M-4 -32 l6 7" fill="none" stroke="#2D5BB0" stroke-width="2.2" stroke-linecap="round"/>
-          <rect x="-64" y="-11" width="128" height="11" rx="5.5" fill="#2D5BB0"/>
-        </g>
-      </g>
-    </svg>
-
-    <span class="gel gel-1"></span><span class="gel gel-2"></span>
-    <span class="gel gel-3"></span><span class="gel gel-4"></span>
-
-    <span class="chip chip-1">
-      <span class="chip-ico"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-      Dijemput
-    </span>
-    <span class="chip chip-2">
-      <span class="chip-ico"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3z"/></svg></span>
-      Sedang dicuci
-    </span>
-    <span class="chip chip-3">
-      <span class="chip-ico"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></span>
-      Siap diantar
+      @if ($fotoHero->count() > 1)
+        <button type="button" class="hs-nav hs-prev" data-prev aria-label="Foto sebelumnya">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="hs-nav hs-next" data-next aria-label="Foto berikutnya">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </button>
+        <div class="hs-dots">
+          @foreach ($fotoHero as $berkas)
+            <button type="button" class="hs-dot" data-dot="{{ $loop->index }}" aria-label="Ke foto {{ $loop->iteration }}"></button>
+          @endforeach
+        </div>
+      @endif
+    </div>
     </span>
   </div>
 </section>
+
+@if ($fotoHero->count() > 1)
+  <script src="{{ asset('js/hero-slider.js') }}" defer></script>
+@endif
 @endsection
 
 @section('content')

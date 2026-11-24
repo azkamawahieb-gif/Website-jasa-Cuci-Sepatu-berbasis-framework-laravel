@@ -85,8 +85,8 @@ class PesananController extends Controller
         $channel = trim((string) ($data['payment_channel'] ?? ''));
 
         $channelBoleh = match ($metode) {
-            'transfer' => array_column(config('pembayaran.bank'), 'nama'),
-            'qris' => config('pembayaran.qris.aplikasi'),
+            'transfer' => PaymentAccount::aktif()->pluck('bank_name')->all(),
+            'qris' => array_keys(config('pembayaran.qris.aplikasi')),
             default => [],
         };
 

@@ -627,6 +627,14 @@
 .pilih-chip:active span { transform: scale(.97); }
 .pilih-chip input:checked + span { background: var(--mint-muda); border-color: var(--biru); color: var(--biru); box-shadow: 0 0 0 3px rgba(46, 90, 172, .12); }
 .pilih-chip input:focus-visible + span { outline: 3px solid var(--sky); outline-offset: 2px; }
+.app-daftar .pilih-chip span {
+  display: inline-flex; align-items: center; justify-content: center;
+  box-sizing: border-box; height: 2.75rem; min-width: 5.5rem; padding: 0 1.25rem;
+}
+.app-daftar .chip-logo img {
+  display: block; height: 1.6rem; width: auto; max-width: 5rem;
+  object-fit: contain; mix-blend-mode: multiply; /* latar putih logo menyatu dengan chip */
+}
 .tandai-pilih, .app-daftar { display: flex; flex-wrap: wrap; gap: .5rem; }
 
 /* Tombol "Ubah" pada pilihan alamat */

@@ -1,4 +1,3 @@
-
 @extends('layouts.pengguna')
 
 @section('title', 'Pesanan ' . $order->code)
@@ -448,14 +447,14 @@
 
     @if ($order->payment_method === 'transfer')
         @php
-            $bank = collect(config('pembayaran.bank'))->firstWhere('nama', $order->payment_channel);
+            $bank = \App\Models\PaymentAccount::where('bank_name', $order->payment_channel)->first();
         @endphp
 
         @if ($bank)
             <p class="bantu" style="margin-top:.4rem">
-                Transfer ke {{ $bank['nama'] }}
-                <strong>{{ $bank['rekening'] }}</strong>
-                a.n. {{ $bank['atas_nama'] }},
+                Transfer ke {{ $bank->bank_name }}
+                <strong>{{ $bank->account_number }}</strong>
+                a.n. {{ $bank->account_name }},
                 lalu kirim bukti transfer lewat menu
                 <a href="{{ route('chat.index') }}">Chat</a>.
             </p>
@@ -464,7 +463,8 @@
     @elseif ($order->payment_method === 'qris')
 
         @php
-            $qris = config('pembayaran.qris.gambar');
+            $qrisAktif = \App\Models\QrisCode::aktif()->first();
+            $qris = $qrisAktif ? 'img/qris/'.$qrisAktif->image : null;
         @endphp
 
         @if ($qris && file_exists(public_path($qris)))

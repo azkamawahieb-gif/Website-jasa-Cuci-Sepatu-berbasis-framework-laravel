@@ -1,6 +1,8 @@
 
 <?php
 
+use App\Http\Controllers\Petugas\QrisController;
+use App\Http\Controllers\Petugas\RekeningController;
 use App\Http\Controllers\Petugas\VoucherController;
 use App\Http\Controllers\Petugas\AkunController;
 use App\Http\Controllers\Petugas\UserController;
@@ -88,6 +90,7 @@ Route::middleware(['auth', 'role:petugas'])
         // Pesanan
         Route::get('pesanan', [OrderController::class, 'index'])->name('pesanan.index');
         Route::get('pesanan/{order}', [OrderController::class, 'show'])->name('pesanan.show');
+        Route::get('pesanan/{order}/cetak', [OrderController::class, 'cetak'])->name('pesanan.cetak');
         Route::post('pesanan/{order}/lanjut', [OrderController::class, 'lanjut'])->name('pesanan.lanjut');
         Route::post('pesanan/{order}/batal', [OrderController::class, 'batal'])->name('pesanan.batal');
         Route::post('pesanan/{order}/bayar', [OrderController::class, 'bayar'])->name('pesanan.bayar');
@@ -116,6 +119,16 @@ Route::middleware(['auth', 'role:petugas'])
         // Master data voucher
         Route::patch('voucher/{voucher}/toggle', [VoucherController::class, 'toggle'])->name('voucher.toggle');
         Route::resource('voucher', VoucherController::class)->except('show');
+
+        // Master data rekening bank
+        Route::patch('rekening/{rekening}/toggle', [RekeningController::class, 'toggle'])->name('rekening.toggle');
+        Route::resource('rekening', RekeningController::class)->except('show');
+
+                // Master data QRIS
+        Route::patch('qris/{qris}/toggle', [QrisController::class, 'toggle'])->name('qris.toggle');
+        Route::resource('qris', QrisController::class)
+            ->parameters(['qris' => 'qris'])
+            ->except('show');
 
         // Master data zona
         Route::patch('zona/{zone}/toggle', [DeliveryZoneController::class, 'toggle'])->name('zona.toggle');

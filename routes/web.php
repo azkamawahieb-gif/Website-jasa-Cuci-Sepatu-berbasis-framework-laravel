@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\Petugas\QrisController;
@@ -54,10 +53,10 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     Route::get('/pengaturan', [\App\Http\Controllers\Pengguna\PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::post('/pengaturan/ganti-akun', [\App\Http\Controllers\Pengguna\PengaturanController::class, 'gantiAkun'])->name('pengaturan.ganti');
 
-    // Chat pengguna
-    Route::get('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'index'])->name('chat.index');
-    Route::post('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'store'])->middleware('throttle:30,1')->name('chat.kirim');
-    Route::get('/chat/pesan', [\App\Http\Controllers\Pengguna\ChatController::class, 'sejak'])->name('chat.sejak');
+   Route::get('/chat', [\App\Http\Controllers\Pengguna\ChatController::class, 'index'])->name('chat.index');
+   Route::get('/chat/pesanan/{order}', [\App\Http\Controllers\Pengguna\ChatController::class, 'show'])->name('chat.order');
+   Route::post('/chat/pesanan/{order}', [\App\Http\Controllers\Pengguna\ChatController::class, 'store'])->middleware('throttle:30,1')->name('chat.kirim');
+   Route::get('/chat/pesanan/{order}/pesan', [\App\Http\Controllers\Pengguna\ChatController::class, 'sejak'])->name('chat.sejak');
 
     // Alamat tersimpan
     Route::get('/profil/alamat', [AlamatController::class, 'index'])->name('alamat.index');
@@ -81,11 +80,10 @@ Route::middleware(['auth', 'role:petugas'])
         // Dashboard
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-        // Chat dengan pengguna
-        Route::get('chat', [\App\Http\Controllers\Petugas\ChatController::class, 'index'])->name('chat.index');
-        Route::get('chat/{user}', [\App\Http\Controllers\Petugas\ChatController::class, 'show'])->name('chat.show');
-        Route::post('chat/{user}', [\App\Http\Controllers\Petugas\ChatController::class, 'store'])->middleware('throttle:60,1')->name('chat.kirim');
-        Route::get('chat/{user}/pesan', [\App\Http\Controllers\Petugas\ChatController::class, 'sejak'])->name('chat.sejak');
+        // Chat pengguna (per pesanan)
+        Route::get('chat/{order}', [\App\Http\Controllers\Petugas\ChatController::class, 'show'])->name('chat.show');
+        Route::post('chat/{order}', [\App\Http\Controllers\Petugas\ChatController::class, 'store'])->middleware('throttle:60,1')->name('chat.kirim');
+        Route::get('chat/{order}/pesan', [\App\Http\Controllers\Petugas\ChatController::class, 'sejak'])->name('chat.sejak');
 
         // Pesanan
         Route::get('pesanan', [OrderController::class, 'index'])->name('pesanan.index');
@@ -124,7 +122,7 @@ Route::middleware(['auth', 'role:petugas'])
         Route::patch('rekening/{rekening}/toggle', [RekeningController::class, 'toggle'])->name('rekening.toggle');
         Route::resource('rekening', RekeningController::class)->except('show');
 
-                // Master data QRIS
+        // Master data QRIS
         Route::patch('qris/{qris}/toggle', [QrisController::class, 'toggle'])->name('qris.toggle');
         Route::resource('qris', QrisController::class)
             ->parameters(['qris' => 'qris'])

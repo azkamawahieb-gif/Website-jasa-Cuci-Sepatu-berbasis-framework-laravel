@@ -1,5 +1,4 @@
-﻿
-@extends('layouts.petugas')
+﻿@extends('layouts.petugas')
 
 @section('title', 'Pesanan ' . $order->code)
 
@@ -8,9 +7,12 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center my-3">
     <h1 class="h4 mb-0">{{ $order->code }}</h1>
-    <span class="badge text-bg-{{ $order->status->color() }} fs-6">
-        {{ $order->statusLabel() }}
-    </span>
+    <div class="d-flex align-items-center gap-2">
+        <a href="{{ route('petugas.chat.show', $order) }}" class="btn btn-sm btn-outline-primary">Chat pengguna</a>
+        <span class="badge text-bg-{{ $order->status->color() }} fs-6">
+            {{ $order->statusLabel() }}
+        </span>
+    </div>
 </div>
 
 <div class="row g-4">

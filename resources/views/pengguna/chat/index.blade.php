@@ -16,14 +16,14 @@
     <h1>Chat dengan Petugas</h1>
   </div>
 
-  <section class="profil-kartu anim-naik" style="--i:1" aria-label="Percakapan dengan petugas">
-    @include('chat._panel', [
-      'pesan' => $pesan,
-      'milik' => fn ($m) => $m->sender_id === auth()->id(),
-      'urlKirim' => route('chat.kirim'),
-      'urlSejak' => route('chat.sejak'),
-      'kosongTeks' => 'Belum ada pesan. Tanyakan status atau kondisi sepatu Anda di sini.',
-    ])
+  <section class="profil-kartu anim-naik" style="--i:1" aria-label="Chat dengan petugas">
+    <p class="chat-kosong">
+      Chat terhubung ke pesanan Anda. Buat pesanan dulu, lalu chat dengan petugas
+      tentang sepatu yang Anda titipkan akan muncul di sini.
+    </p>
+    <p style="text-align:center;margin:0">
+      <a href="{{ route('pesanan.buat') }}" class="btn">Buat pesanan</a>
+    </p>
   </section>
 </div>
 @endsection

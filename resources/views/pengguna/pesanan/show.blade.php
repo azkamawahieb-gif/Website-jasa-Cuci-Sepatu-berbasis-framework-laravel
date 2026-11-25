@@ -57,6 +57,8 @@
                 <span class="badge badge-{{ $order->status->color() }}">
                     {{ $order->statusLabel() }}
                 </span>
+
+                <a href="{{ route('chat.order', $order) }}" class="btn btn-outline btn-kecil">Chat petugas</a>
             </div>
 
             <p>
@@ -456,7 +458,7 @@
                 <strong>{{ $bank->account_number }}</strong>
                 a.n. {{ $bank->account_name }},
                 lalu kirim bukti transfer lewat menu
-                <a href="{{ route('chat.index') }}">Chat</a>.
+                <a href="{{ route('chat.order', $order) }}">Chat</a>
             </p>
         @endif
 

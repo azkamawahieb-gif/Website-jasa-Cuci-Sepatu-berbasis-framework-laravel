@@ -73,3 +73,24 @@
   .chat-gelembung { animation: none; }
   .chat-daftar { scroll-behavior: auto; }
 }
+/* Ringkasan pesanan di atas chat */
+.chat-pesanan {
+  margin-bottom: .8rem;
+  padding: .75rem .95rem;
+  background: #fff;
+  border: 1px solid #D5E4F0;
+  border-radius: 16px;
+  color: #0B2545;
+}
+.chat-pesanan-atas { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; }
+.chat-pesanan-label { display: block; font-size: .72rem; color: #4A5D78; }
+.chat-pesanan-kode { font-weight: 700; color: #2D5BB0; text-decoration: none; }
+.chat-pesanan-kode:hover { text-decoration: underline; }
+.chat-pesanan-status { padding: .2rem .65rem; border-radius: 999px; font-size: .75rem; font-weight: 600; background: #E8EEF9; color: #1F4AA0; }
+.chat-status-warning { background: #FFF4D6; color: #7A5800; }
+.chat-status-success { background: #DDF5E6; color: #17653A; }
+.chat-status-danger { background: #FBE4E2; color: #B3261E; }
+.chat-pesanan-item { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .2rem; font-size: .88rem; }
+.chat-pesanan-item li { display: flex; flex-wrap: wrap; gap: .2rem .6rem; align-items: baseline; }
+.chat-pesanan-item span { color: #4A5D78; }
+.chat-pesanan-item .chat-pesanan-layanan { padding: .05rem .5rem; border-radius: 999px; background: #F2FBF9; border: 1px solid #D5E4F0; font-size: .78rem; }

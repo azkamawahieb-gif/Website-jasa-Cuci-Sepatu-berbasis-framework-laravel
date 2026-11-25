@@ -80,10 +80,10 @@ Route::middleware(['auth', 'role:petugas'])
         // Dashboard
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-        // Chat pengguna (per pesanan)
-        Route::get('chat/{order}', [\App\Http\Controllers\Petugas\ChatController::class, 'show'])->name('chat.show');
-        Route::post('chat/{order}', [\App\Http\Controllers\Petugas\ChatController::class, 'store'])->middleware('throttle:60,1')->name('chat.kirim');
-        Route::get('chat/{order}/pesan', [\App\Http\Controllers\Petugas\ChatController::class, 'sejak'])->name('chat.sejak');
+       Route::get('chat', [\App\Http\Controllers\Petugas\ChatController::class, 'index'])->name('chat.index');
+Route::get('chat/{order}', [\App\Http\Controllers\Petugas\ChatController::class, 'show'])->name('chat.show');
+Route::post('chat/{order}', [\App\Http\Controllers\Petugas\ChatController::class, 'store'])->middleware('throttle:60,1')->name('chat.kirim');
+Route::get('chat/{order}/pesan', [\App\Http\Controllers\Petugas\ChatController::class, 'sejak'])->name('chat.sejak');
 
         // Pesanan
         Route::get('pesanan', [OrderController::class, 'index'])->name('pesanan.index');

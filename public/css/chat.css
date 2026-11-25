@@ -94,3 +94,36 @@
 .chat-pesanan-item li { display: flex; flex-wrap: wrap; gap: .2rem .6rem; align-items: baseline; }
 .chat-pesanan-item span { color: #4A5D78; }
 .chat-pesanan-item .chat-pesanan-layanan { padding: .05rem .5rem; border-radius: 999px; background: #F2FBF9; border: 1px solid #D5E4F0; font-size: .78rem; }
+
+/* Pilihan pesanan (jika pelanggan punya lebih dari satu) */
+.chat-pilih {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: .8rem;
+  padding-bottom: .2rem;
+  overflow-x: auto;
+}
+.chat-pilih-item {
+  flex: none;
+  position: relative;
+  display: grid;
+  gap: .05rem;
+  padding: .45rem .85rem;
+  background: #fff;
+  border: 1px solid #D5E4F0;
+  border-radius: 14px;
+  color: #0B2545;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+}
+.chat-pilih-item small { font-weight: 400; color: #4A5D78; font-size: .72rem; }
+.chat-pilih-item:hover { border-color: #2D5BB0; }
+.chat-pilih-item.aktif { background: #2D5BB0; border-color: #2D5BB0; color: #fff; }
+.chat-pilih-item.aktif small { color: #E8EEF9; }
+.chat-pilih-badge {
+  position: absolute; top: -6px; right: -6px;
+  min-width: 20px; padding: 0 .35rem;
+  border-radius: 999px; background: #B3261E; color: #fff;
+  font-style: normal; font-size: .7rem; line-height: 20px; text-align: center;
+}

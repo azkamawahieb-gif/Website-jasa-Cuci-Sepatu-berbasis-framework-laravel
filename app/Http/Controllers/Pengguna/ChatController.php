@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Http\Controllers\Pengguna;
@@ -37,7 +38,15 @@ class ChatController extends Controller
         $pesan = $order->chatMessages()
             ->orderByDesc('id')->limit(100)->get()->reverse()->values();
 
-        return view('pengguna.chat.show', compact('order', 'pesan'));
+        // Daftar pesanan pengguna untuk tab pilihan, lengkap dengan jumlah balasan belum dibaca
+        $daftarPesanan = Order::where('user_id', $request->user()->id)
+            ->with('deliveries')
+            ->withCount(['chatMessages as belum_dibaca' => fn ($q) => $q
+                ->whereColumn('sender_id', '<>', 'user_id')
+                ->whereNull('read_at')])
+            ->latest('id')->limit(10)->get();
+
+        return view('pengguna.chat.show', compact('order', 'pesan', 'daftarPesanan'));
     }
 
     public function store(Request $request, Order $order)
